@@ -21,7 +21,7 @@ class JobRepository extends ServiceEntityRepository
         parent::__construct($registry, Job::class);
     }
 
-    public function addJobWithId(string $id)
+    public function addNewJob(string $id)
     {
         $job = new Job();
         $job->setId($id);
@@ -35,11 +35,10 @@ class JobRepository extends ServiceEntityRepository
     }
 
     /** @return string[] */
-    public function findAllIds(): array
+    public function findAllJobs(): array
     {
-        return array_map(function($job) {
-            return $job->getId();
-        }, $this->findAll());
+        return array_map(fn($job) => $job->getId()
+            , $this->findAll());
     }
 
 }

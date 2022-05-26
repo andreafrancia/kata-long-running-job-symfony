@@ -19,9 +19,9 @@ class JobRepositoryTest extends KernelTestCase
 
     public function testCanConnectToDatabase(): void
     {
-        $this->repository->addJobWithId('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+        $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
-        $jobs = $this->repository->findAllIds();
+        $jobs = $this->repository->findAllJobs();
 
         self::assertSame(['1ecdc6ce-1a82-605a-8724-f3236ab886a0'], $jobs);
     }
