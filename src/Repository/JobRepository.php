@@ -29,15 +29,6 @@ class JobRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function remove(Job $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
     /** @return string[] */
     public function findAllIds(): array
     {
