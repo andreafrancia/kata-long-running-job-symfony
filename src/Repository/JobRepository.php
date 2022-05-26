@@ -29,6 +29,11 @@ class JobRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
+    public function removeAllJobs()
+    {
+        $this->getEntityManager()->createQuery('DELETE FROM App\Entity\Job')->execute();
+    }
+
     /** @return string[] */
     public function findAllIds(): array
     {

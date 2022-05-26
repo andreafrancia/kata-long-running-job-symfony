@@ -9,21 +9,16 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class DbTest extends KernelTestCase
 {
-    private EntityManager $entityManager;
-
     protected function setUp(): void
     {
         self::bootKernel();
-        $this->entityManager = self::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
     }
 
     public function testCanConnectToDatabase(): void
     {
-        $this->entityManager->createQuery('DELETE FROM App\Entity\Job')->execute();
         /** @var JobRepository */
         $repository = self::$kernel->getContainer()->get('doctrine')->getRepository(Job::class);
+        $repository->removeAllJobs();
         $repository->addJobWithId('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
         $jobs = $repository->findAllIds();
