@@ -21,13 +21,12 @@ class JobRepository extends ServiceEntityRepository
         parent::__construct($registry, Job::class);
     }
 
-    public function add(Job $entity, bool $flush = false): void
+    public function addJobWithId(string $id)
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $job = new Job();
+        $job->setId($id);
+        $this->getEntityManager()->persist($job);
+        $this->getEntityManager()->flush();
     }
 
     public function remove(Job $entity, bool $flush = false): void

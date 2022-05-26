@@ -24,9 +24,7 @@ class DbTest extends KernelTestCase
         $this->entityManager->createQuery('DELETE FROM App\Entity\Job')->execute();
         /** @var JobRepository */
         $repository = self::$kernel->getContainer()->get('doctrine')->getRepository(Job::class);
-        $job = new Job();
-        $job->setId('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
-        $repository->add($job, true);
+        $repository->addJobWithId('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
         $jobs = $repository->findAllIds();
 
