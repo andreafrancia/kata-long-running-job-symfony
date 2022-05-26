@@ -12,6 +12,9 @@ class Job
     #[ORM\Column(type: 'uuid', unique: true)]
     private ?string $id;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $status;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -20,6 +23,18 @@ class Job
     public function setId(?string $id): void
     {
         $this->id =	 $id;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
 }

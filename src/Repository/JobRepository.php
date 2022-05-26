@@ -6,6 +6,11 @@ use App\Entity\Job;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+enum Status
+{
+    case started;
+}
+
 /**
  * @extends ServiceEntityRepository<Job>
  *
@@ -25,6 +30,7 @@ class JobRepository extends ServiceEntityRepository
     {
         $job = new Job();
         $job->setId($id);
+        $job->setStatus(Status::started->name);
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
     }
