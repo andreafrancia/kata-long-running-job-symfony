@@ -3,13 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Job;
+use App\Entity\JobStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
-enum Status
-{
-    case started;
-}
 
 /**
  * @extends ServiceEntityRepository<Job>
@@ -30,7 +26,7 @@ class JobRepository extends ServiceEntityRepository
     {
         $job = new Job();
         $job->setId($id);
-        $job->setStatus(Status::started->name);
+        $job->setStatus(JobStatus::started->name);
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
     }
@@ -45,6 +41,13 @@ class JobRepository extends ServiceEntityRepository
     {
         return array_map(fn($job) => $job->getId()
             , $this->findAll());
+    }
+
+    public function readJobStatus(string $jobId): JobStatus
+    {
+        /** @var Job $job */
+        $job = $this->find($jobId);
+        return JobStatus::from($job->getStatus());
     }
 
 }

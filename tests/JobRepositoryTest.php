@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Entity\Job;
 use App\Repository\JobRepository;
+use App\Entity\JobStatus;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class JobRepositoryTest extends KernelTestCase
@@ -17,7 +18,7 @@ class JobRepositoryTest extends KernelTestCase
         $this->repository->removeAllJobs();
     }
 
-    public function testCanConnectToDatabase(): void
+    public function testAddNewJob(): void
     {
         $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
@@ -25,4 +26,14 @@ class JobRepositoryTest extends KernelTestCase
 
         self::assertSame(['1ecdc6ce-1a82-605a-8724-f3236ab886a0'], $jobs);
     }
+
+    public function testReadStatusOfJob(): void
+    {
+        $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+
+        $status = $this->repository->readJobStatus('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+
+        self::assertSame(JobStatus::started, $status);
+    }
+
 }
