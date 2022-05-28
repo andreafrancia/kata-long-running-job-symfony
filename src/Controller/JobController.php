@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Message\MakeLongCalculation;
 use App\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +26,7 @@ class JobController extends AbstractController
         $jobId = $this->jobIdForTest ?? Uuid::v4();;
 
         $repository->addNewJob($jobId);
+        $messageBus->dispatch(new MakeLongCalculation($jobId));
 
         return $this->json([
                                'message' => 'Job started',
