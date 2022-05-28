@@ -38,9 +38,9 @@ class JobController extends AbstractController
     }
 
     /*
-     * To test manually use:
+     * To test manually use (for example):
      *
-     * curl https://localhost:8002/job/status
+     * curl https://localhost:8002/job/status/2552f7a5-d3a2-40cf-bbc1-9c8d51970608
      *
      */
     #[Route('/job/status/{id}', methods:['GET'])]
