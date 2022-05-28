@@ -9,11 +9,14 @@ use App\Entity\JobStatus;
 use App\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class JobControllerTest extends KernelTestCase
 {
     private JobController $controller;
     private JobRepository $repository;
+    private MessageBusInterface $messageBus;
 
     protected function setUp(): void
     {
@@ -27,6 +30,14 @@ class JobControllerTest extends KernelTestCase
         $repository = self::$kernel->getContainer()->get('doctrine')->getRepository(Job::class);
         $this->repository = $repository;
 
+        $this->messageBus = new class implements MessageBusInterface {
+
+            public function dispatch(object $message, array $stamps = []): Envelope
+            {
+                return new Envelope(new \stdClass());
+            }
+        };
+
         $this->repository->removeAllJobs();
     }
 
@@ -37,7 +48,7 @@ class JobControllerTest extends KernelTestCase
     {
         $this->controller->setJobIdForTest("fcdad92e-dd57-4b14-ba00-32f7f991448b");
 
-        $result = $this->parseResult($this->controller->addNewJob($this->repository));
+        $result = $this->parseResult($this->invokeControllerAddNewJob());
 
         $status = $this->repository->readJobStatus("fcdad92e-dd57-4b14-ba00-32f7f991448b");
         self::assertEquals(new JobStatusAndResult(JobStatus::started, null), $status);
@@ -48,7 +59,7 @@ class JobControllerTest extends KernelTestCase
     public function testReadJobStatusOfAStartedJob()
     {
         $this->controller->setJobIdForTest("fcdad92e-dd57-4b14-ba00-32f7f991448b");
-        $this->controller->addNewJob($this->repository);
+        $this->invokeControllerAddNewJob();
 
         $result = $this->parseResult(
             $this->controller->readStatusofJob($this->repository,
@@ -61,7 +72,7 @@ class JobControllerTest extends KernelTestCase
     public function testReadJobStatusOfACompletedJob()
     {
         $this->controller->setJobIdForTest("fcdad92e-dd57-4b14-ba00-32f7f991448b");
-        $this->controller->addNewJob($this->repository);
+        $this->invokeControllerAddNewJob();
         $this->repository->trackCompletion("fcdad92e-dd57-4b14-ba00-32f7f991448b",
                                            "magical result");
 
@@ -76,6 +87,11 @@ class JobControllerTest extends KernelTestCase
     private function parseResult(JsonResponse $response): array
     {
         return json_decode($response->getContent(), true);
+    }
+
+    private function invokeControllerAddNewJob(): JsonResponse
+    {
+        return $this->controller->addNewJob($this->repository, $this->messageBus);
     }
 
 }
