@@ -58,6 +58,21 @@ class JobControllerTest extends KernelTestCase
         self::assertEquals(false, array_key_exists('result', $result));
     }
 
+    public function testReadJobStatusOfACompletedJob()
+    {
+        $this->controller->setJobIdForTest("fcdad92e-dd57-4b14-ba00-32f7f991448b");
+        $this->controller->addNewJob($this->repository);
+        $this->repository->trackCompletion("fcdad92e-dd57-4b14-ba00-32f7f991448b",
+                                           "magical result");
+
+        $result = $this->parseResult(
+            $this->controller->readStatusofJob($this->repository,
+                                               "fcdad92e-dd57-4b14-ba00-32f7f991448b"));
+
+        self::assertEquals('completed', $result['status']);
+        self::assertEquals('magical result', $result['result']);
+    }
+
     private function parseResult(JsonResponse $response): array
     {
         return json_decode($response->getContent(), true);

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\JobStatus;
 use App\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,10 +46,15 @@ class JobController extends AbstractController
     #[Route('/job/status/{id}', methods:['GET'])]
     public function readStatusofJob(JobRepository $repository, $id): JsonResponse
     {
-        $result = $repository->readJobStatus($id);
+        $jobStatusAndResult = $repository->readJobStatus($id);
 
-        return $this->json([
-                               'status' => $result->status
-                           ]);
+        $result = [
+            'status' => $jobStatusAndResult->status
+        ];
+
+        if($jobStatusAndResult->isCompleted())
+            $result['result'] = $jobStatusAndResult->result;
+
+        return $this->json($result);
     }
 }

@@ -15,4 +15,8 @@ class JobStatusAndResult
         $this->result = $result;
     }
 
+    public function isCompleted(): bool
+    {
+        return $this->status === JobStatus::completed;
+    }
 }
