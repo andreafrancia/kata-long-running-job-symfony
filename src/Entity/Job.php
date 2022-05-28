@@ -16,7 +16,7 @@ class Job
     private string $status;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $result;
+    private $result;
 
     public function getId(): ?string
     {
