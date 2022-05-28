@@ -15,6 +15,9 @@ class Job
     #[ORM\Column(type: 'string', length: 255)]
     private $status;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $result;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -35,6 +38,16 @@ class Job
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getResult(): ?string
+    {
+        return $this->result;
+    }
+
+    public function setResult(string $result): void
+    {
+        $this->result = $result;
     }
 
 }

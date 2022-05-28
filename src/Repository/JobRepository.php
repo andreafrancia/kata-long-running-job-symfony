@@ -48,7 +48,18 @@ class JobRepository extends ServiceEntityRepository
     {
         /** @var Job $job */
         $job = $this->find($jobId);
-        return new JobStatusAndResult(JobStatus::from($job->getStatus()), null);
+        return new JobStatusAndResult(
+            JobStatus::from($job->getStatus()),
+            $job->getResult());
+    }
+
+    public function trackCompletion(string $jobId, string $result)
+    {
+        /** @var Job $job */
+        $job = $this->getEntityManager()->find(Job::class, $jobId);
+        $job->setResult($result);
+        $this->getEntityManager()->persist($job);
+        $this->getEntityManager()->flush();
     }
 
 }
