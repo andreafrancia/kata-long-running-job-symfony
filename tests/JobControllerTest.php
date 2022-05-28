@@ -26,6 +26,8 @@ class JobControllerTest extends KernelTestCase
         /** @var JobRepository $repository */
         $repository = self::$kernel->getContainer()->get('doctrine')->getRepository(Job::class);
         $this->repository = $repository;
+
+        $this->repository->removeAllJobs();
     }
 
     /**
@@ -41,6 +43,19 @@ class JobControllerTest extends KernelTestCase
         self::assertEquals(new JobStatusAndResult(JobStatus::started, null), $status);
         self::assertEquals('fcdad92e-dd57-4b14-ba00-32f7f991448b', $result['jobId']);
         self::assertEquals('Job started', $result['message']);
+    }
+
+    public function testReadJobStatusOfAStartedJob()
+    {
+        $this->controller->setJobIdForTest("fcdad92e-dd57-4b14-ba00-32f7f991448b");
+        $this->controller->addNewJob($this->repository);
+
+        $result = $this->parseResult(
+            $this->controller->readStatusofJob($this->repository,
+                                               "fcdad92e-dd57-4b14-ba00-32f7f991448b"));
+
+        self::assertEquals('started', $result['status']);
+        self::assertEquals(false, array_key_exists('result', $result));
     }
 
     private function parseResult(JsonResponse $response): array

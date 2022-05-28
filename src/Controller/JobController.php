@@ -18,7 +18,7 @@ class JobController extends AbstractController
      * curl -X POST https://localhost:8002/job/add-new
      *
      */
-    #[Route('/job/add-new', name: 'app_job', methods: ['POST'])]
+    #[Route('/job/add-new', methods: ['POST'])]
     public function addNewJob(JobRepository $repository): JsonResponse
     {
         $jobId = $this->jobIdForTest ?? Uuid::v4();;
@@ -26,13 +26,29 @@ class JobController extends AbstractController
         $repository->addNewJob($jobId);
 
         return $this->json([
-            'message' => 'Job started',
-            'jobId' => $jobId,
-        ]);
+                               'message' => 'Job started',
+                               'jobId' => $jobId,
+                           ]);
     }
 
     public function setJobIdForTest(string $jobId)
     {
         $this->jobIdForTest = $jobId;
+    }
+
+    /*
+     * To test manually use:
+     *
+     * curl https://localhost:8002/job/status
+     *
+     */
+    #[Route('/job/status/{id}', methods:['GET'])]
+    public function readStatusofJob(JobRepository $repository, $id): JsonResponse
+    {
+        $result = $repository->readJobStatus($id);
+
+        return $this->json([
+                               'status' => $result->status
+                           ]);
     }
 }
