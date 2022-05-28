@@ -8,6 +8,7 @@ use App\Entity\Job;
 use App\Entity\JobStatus;
 use App\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JobControllerTest extends KernelTestCase
 {
@@ -27,13 +28,24 @@ class JobControllerTest extends KernelTestCase
         $this->repository = $repository;
     }
 
-    public function test()
+    /**
+     * @throws \Exception
+     */
+    public function testAddNewJob()
     {
         $this->controller->setJobIdForTest("fcdad92e-dd57-4b14-ba00-32f7f991448b");
 
-        $this->controller->addNewJob($this->repository);
+        $result = $this->parseResult($this->controller->addNewJob($this->repository));
 
         $status = $this->repository->readJobStatus("fcdad92e-dd57-4b14-ba00-32f7f991448b");
         self::assertEquals(new JobStatusAndResult(JobStatus::started, null), $status);
+        self::assertEquals('fcdad92e-dd57-4b14-ba00-32f7f991448b', $result['jobId']);
+        self::assertEquals('Job started', $result['message']);
     }
+
+    private function parseResult(JsonResponse $response): array
+    {
+        return json_decode($response->getContent(), true);
+    }
+
 }

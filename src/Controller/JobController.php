@@ -14,10 +14,13 @@ class JobController extends AbstractController
     #[Route('/job/add-new', name: 'app_job', methods: ['POST'])]
     public function addNewJob(JobRepository $repository): JsonResponse
     {
-        $repository->addNewJob($this->jobIdForTest);
+        $jobId = $this->jobIdForTest;
+
+        $repository->addNewJob($jobId);
+
         return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/JobController.php',
+            'message' => 'Job started',
+            'jobId' => $jobId,
         ]);
     }
 
