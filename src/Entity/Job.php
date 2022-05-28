@@ -13,10 +13,10 @@ class Job
     private ?string $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $status;
+    private string $status;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $result;
+    private ?string $result;
 
     public function getId(): ?string
     {
@@ -33,11 +33,9 @@ class Job
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(JobStatus $status): void
     {
-        $this->status = $status;
-
-        return $this;
+        $this->status = $status->value;
     }
 
     public function getResult(): ?string

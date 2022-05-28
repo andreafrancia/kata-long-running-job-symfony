@@ -27,7 +27,7 @@ class JobRepository extends ServiceEntityRepository
     {
         $job = new Job();
         $job->setId($id);
-        $job->setStatus(JobStatus::started->name);
+        $job->setStatus(JobStatus::started);
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
     }
@@ -57,7 +57,7 @@ class JobRepository extends ServiceEntityRepository
     {
         /** @var Job $job */
         $job = $this->getEntityManager()->find(Job::class, $jobId);
-        $job->setStatus(JobStatus::completed->value);
+        $job->setStatus(JobStatus::completed);
         $job->setResult($result);
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
