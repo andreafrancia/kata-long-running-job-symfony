@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\JobStatus;
 use App\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
