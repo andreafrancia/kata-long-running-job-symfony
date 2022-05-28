@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Enitty\JobStatusAndResult;
 use App\Entity\Job;
 use App\Entity\JobStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -43,11 +44,11 @@ class JobRepository extends ServiceEntityRepository
             , $this->findAll());
     }
 
-    public function readJobStatus(string $jobId): JobStatus
+    public function readJobStatus(string $jobId): JobStatusAndResult
     {
         /** @var Job $job */
         $job = $this->find($jobId);
-        return JobStatus::from($job->getStatus());
+        return new JobStatusAndResult(JobStatus::from($job->getStatus()), null);
     }
 
 }

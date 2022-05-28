@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Enitty\JobStatusAndResult;
 use App\Entity\Job;
 use App\Repository\JobRepository;
 use App\Entity\JobStatus;
@@ -33,7 +34,8 @@ class JobRepositoryTest extends KernelTestCase
 
         $status = $this->repository->readJobStatus('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
-        self::assertSame(JobStatus::started, $status);
+        self::assertEquals(new JobStatusAndResult(JobStatus::started, null),
+                           $status);
     }
 
 }
