@@ -44,10 +44,17 @@ class JobRepository extends ServiceEntityRepository
             , $this->findAll());
     }
 
+    /**
+     * @throws \Exception
+     */
     public function readJobStatus(string $jobId): JobStatusAndResult
     {
         /** @var Job $job */
         $job = $this->find($jobId);
+
+        if($job===null)
+            throw new \Exception("Job not found, id: $jobId");
+
         return new JobStatusAndResult(
             JobStatus::from($job->getStatus()),
             $job->getResult());
