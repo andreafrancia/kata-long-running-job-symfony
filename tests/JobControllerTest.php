@@ -30,10 +30,10 @@ class JobControllerTest extends KernelTestCase
     public function test()
     {
         $this->controller->setJobIdForTest("fcdad92e-dd57-4b14-ba00-32f7f991448b");
+
         $this->controller->addNewJob($this->repository);
 
         $status = $this->repository->readJobStatus("fcdad92e-dd57-4b14-ba00-32f7f991448b");
-
         self::assertEquals(new JobStatusAndResult(JobStatus::started, null), $status);
     }
 }
