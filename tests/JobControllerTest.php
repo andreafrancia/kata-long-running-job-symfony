@@ -3,7 +3,7 @@
 namespace App\Tests;
 
 use App\Controller\JobController;
-use App\Enitty\JobStatusAndResult;
+use App\Entity\JobStatusAndResult;
 use App\Entity\Job;
 use App\Entity\JobStatus;
 use App\Repository\JobRepository;

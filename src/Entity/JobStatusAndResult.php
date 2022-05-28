@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Enitty;
-
-use App\Entity\JobStatus;
+namespace App\Entity;
 
 class JobStatusAndResult
 {

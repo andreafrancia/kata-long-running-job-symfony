@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\Enitty\JobStatusAndResult;
+use App\Entity\JobStatusAndResult;
 use App\Entity\Job;
 use App\Repository\JobRepository;
 use App\Entity\JobStatus;

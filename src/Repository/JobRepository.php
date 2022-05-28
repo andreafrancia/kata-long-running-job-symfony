@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Enitty\JobStatusAndResult;
+use App\Entity\JobStatusAndResult;
 use App\Entity\Job;
 use App\Entity\JobStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
