@@ -57,6 +57,7 @@ class JobRepository extends ServiceEntityRepository
     {
         /** @var Job $job */
         $job = $this->getEntityManager()->find(Job::class, $jobId);
+        $job->setStatus(JobStatus::completed->value);
         $job->setResult($result);
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
