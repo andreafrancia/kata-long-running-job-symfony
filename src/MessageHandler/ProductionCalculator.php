@@ -7,7 +7,7 @@ class ProductionCalculator implements Calculator
     public function calculate(string $input): string
     {
         sleep($this->getDuration($_ENV));
-        return 'real result';
+        return strtoupper($input);
     }
 
     public function getDuration(array $env): int
