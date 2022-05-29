@@ -16,14 +16,14 @@ class ProductionCalculatorTest extends TestCase
 
     public function testWhenDefinedByEnvironmentVariable(): void
     {
-        $result = $this->calculator->getDuration(["JOB_DURATION" => "99"]);
+        $result = $this->calculator->getSleepDuration(["JOB_DURATION" => "99"]);
 
         self::assertEquals(99, $result);
     }
 
     public function testDefaultVAlue(): void
     {
-        $result = $this->calculator->getDuration([]);
+        $result = $this->calculator->getSleepDuration([]);
 
         self::assertEquals(120, $result);
     }
