@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-use App\Controller\JobController;
 use App\Entity\JobStatusAndResult;
 use App\Entity\Job;
 use App\Entity\JobStatus;
@@ -13,9 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /** @group integration */
-class JobControllerTest extends WebTestCase
+class JobApiToDbTest extends WebTestCase
 {
-    private JobController $controller;
     private JobRepository $repository;
     private KernelBrowser $client;
 
@@ -23,10 +21,6 @@ class JobControllerTest extends WebTestCase
     {
         $this->client = self::createClient();
         self::bootKernel();
-
-        /** @var JobController controller */
-        $controller = self::$kernel->getContainer()->get('App\Controller\JobController');
-        $this->controller = $controller;
 
         /** @var JobRepository $repository */
         $repository = self::$kernel->getContainer()->get('doctrine')->getRepository(Job::class);
@@ -58,16 +52,11 @@ class JobControllerTest extends WebTestCase
         $this->addNewJob("fcdad92e-dd57-4b14-ba00-32f7f991448b");
 
         // Act
-        $result = $this->parseResult(
-            $this->controller->readStatusOfJob(
-                $this->repository,
-                "fcdad92e-dd57-4b14-ba00-32f7f991448b"
-            )
-        );
+        $this->client->request('GET', '/job/status/fcdad92e-dd57-4b14-ba00-32f7f991448b');
 
         // Asssert
-        self::assertEquals('started', $result['status']);
-        self::assertEquals(false, array_key_exists('result', $result));
+        self::assertEquals('started', $this->jsonFromResponse()['status']);
+        self::assertEquals(false, array_key_exists('result', $this->jsonFromResponse()));
     }
 
     public function testReadJobStatusOfACompletedJob()
@@ -80,16 +69,11 @@ class JobControllerTest extends WebTestCase
         );
 
         // Act
-        $result = $this->parseResult(
-            $this->controller->readStatusOfJob(
-                $this->repository,
-                "fcdad92e-dd57-4b14-ba00-32f7f991448b"
-            )
-        );
+        $this->client->request('GET', '/job/status/fcdad92e-dd57-4b14-ba00-32f7f991448b');
 
         // Assert
-        self::assertEquals('completed', $result['status']);
-        self::assertEquals('magical result', $result['result']);
+        self::assertEquals('completed', $this->jsonFromResponse()['status']);
+        self::assertEquals('magical result', $this->jsonFromResponse()['result']);
     }
 
     private function parseResult(JsonResponse $response): array
@@ -101,6 +85,11 @@ class JobControllerTest extends WebTestCase
     {
         $this->client->request('POST', "/job/add-new?job-id-for-test=$jobId");
 
+        return $this->jsonFromResponse();
+    }
+
+    private function jsonFromResponse(): array
+    {
         return json_decode($this->client->getResponse()->getContent(), true);
     }
 }
