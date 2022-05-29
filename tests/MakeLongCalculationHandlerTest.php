@@ -8,6 +8,7 @@ use App\MessageHandler\MakeLongCalculationHandler;
 use App\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/** @group integration */
 class MakeLongCalculationHandlerTest extends KernelTestCase
 {
     private MakeLongCalculationHandler $handler;

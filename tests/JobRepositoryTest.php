@@ -8,6 +8,7 @@ use App\Repository\JobRepository;
 use App\Entity\JobStatus;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/** @group integration */
 class JobRepositoryTest extends KernelTestCase
 {
     private JobRepository $repository;
