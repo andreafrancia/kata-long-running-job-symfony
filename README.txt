@@ -29,4 +29,8 @@ Run only unit tests:
 
     symfony run bin/phpunit --exclude-group integration
 
+To get the code coverage report:
+
+    XDEBUG_MODE=coverage symfony run bin/phpunit --coverage-html reports/
+
 -EOF
