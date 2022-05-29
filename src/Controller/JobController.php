@@ -45,7 +45,11 @@ class JobController extends AbstractController
     private function jobIdFor(Request $request): string
     {
         if (in_array($request->getClientIp(), ['::1', '127.0.0.1'])) {
-            return $request->query->get('job-id-for-test');
+            $idForTest = $request->query->get('job-id-for-test');
+
+            if ($idForTest) {
+                return $idForTest;
+            }
         }
         return Uuid::v4()->toRfc4122();
     }
