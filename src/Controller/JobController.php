@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Message\MakeLongCalculation;
 use App\Repository\JobNotFoundException;
 use App\Repository\JobRepository;
+use App\UseCase\AddNewJob;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -24,14 +25,14 @@ class JobController extends AbstractController
     #[Route('/job/add-new', methods: ['POST'])]
     public function addNewJob(JobRepository $repository, MessageBusInterface $messageBus): JsonResponse
     {
-        $jobId = $this->jobIdForTest ?? Uuid::v4();
+        $useCase = new AddNewJob($repository, $messageBus);
 
-        $repository->addNewJob($jobId);
-        $messageBus->dispatch(new MakeLongCalculation($jobId));
+        $jobId = $this->jobIdForTest ?? Uuid::v4();
+        $reply = $useCase->invoke($jobId);
 
         return $this->json([
-                               'message' => 'Job started',
-                               'jobId' => $jobId,
+                               'message' => $reply->message,
+                               'jobId' => $reply->jobId,
                            ]);
     }
 
