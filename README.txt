@@ -12,7 +12,7 @@ Usage example
     $ curl https://localhost:8002/job/status/f0756fbf-50cf-41d6-a1ee-88c5652d8d50
     {"status":"started"}%
 
-On another termianl:
+On another terminal:
 
     $ symfony console messenger:consume async -vv
 
