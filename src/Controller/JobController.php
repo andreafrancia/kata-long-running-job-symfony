@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\JobNotFoundException;
 use App\Repository\JobRepository;
 use App\UseCase\AddNewJob;
+use App\UseCase\AddNewJob\AddNewJobRequest;
 use App\UseCase\ReadStatusOfJob;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,34 +26,20 @@ class JobController extends AbstractController
      */
     #[Route('/job/add-new', methods: ['POST'])]
     public function addNewJob(
-        JobRepository       $repository,
+        JobRepository $repository,
         MessageBusInterface $messageBus,
-        Request             $request,
-    ): JsonResponse
-    {
+        Request $request,
+    ): JsonResponse {
         $useCase = new AddNewJob($repository, $messageBus);
 
-        $jobId = $this->jobIdFor($request);
-        $input = $request->getContent(true);
+        $useCaseRequest = AddNewJobRequest::fromRequest($request);
 
-        $reply = $useCase->invoke($jobId, $input);
+        $reply = $useCase->invoke($useCaseRequest->jobId, $useCaseRequest->input);
 
         return $this->json([
                                'message' => $reply->message,
                                'jobId' => $reply->jobId,
                            ]);
-    }
-
-    private function jobIdFor(Request $request): string
-    {
-        if (in_array($request->getClientIp(), ['::1', '127.0.0.1'])) {
-            $idForTest = $request->query->get('job-id-for-test');
-
-            if ($idForTest) {
-                return $idForTest;
-            }
-        }
-        return Uuid::v4()->toRfc4122();
     }
 
     /*
@@ -64,9 +51,8 @@ class JobController extends AbstractController
     #[Route('/job/status/{id}', methods: ['GET'])]
     public function readStatusOfJob(
         JobRepository $repository,
-        string        $id,
-    ): JsonResponse
-    {
+        string $id,
+    ): JsonResponse {
         try {
             $useCase = new ReadStatusOfJob($repository);
 
