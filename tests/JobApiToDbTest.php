@@ -75,6 +75,24 @@ class JobApiToDbTest extends WebTestCase
         self::assertEquals('magical result', $this->jsonFromResponse()['result']);
     }
 
+    public function testJobNotFoundWhenReadingStatus()
+    {
+        // Arrange
+
+        // Act
+        $this->client->request('GET', '/job/status/3424c36e-79cb-4568-a0e1-63b783f8b407');
+
+        // Assert
+        self::assertEquals(404, $this->responseStatusCode());
+        self::assertEquals(
+            [
+                'message' => 'job not found',
+                'jobId' => '3424c36e-79cb-4568-a0e1-63b783f8b407',
+            ],
+            $this->jsonFromResponse()
+        );
+    }
+
     private function addNewJob(string $jobId): array
     {
         $this->client->request('POST', "/job/add-new?job-id-for-test=$jobId");
@@ -85,5 +103,10 @@ class JobApiToDbTest extends WebTestCase
     private function jsonFromResponse(): array
     {
         return json_decode($this->client->getResponse()->getContent(), true);
+    }
+
+    private function responseStatusCode(): int
+    {
+        return $this->client->getResponse()->getStatusCode();
     }
 }

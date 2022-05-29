@@ -25,10 +25,11 @@ class JobController extends AbstractController
      */
     #[Route('/job/add-new', methods: ['POST'])]
     public function addNewJob(
-        JobRepository $repository,
+        JobRepository       $repository,
         MessageBusInterface $messageBus,
-        Request $request,
-    ): JsonResponse {
+        Request             $request,
+    ): JsonResponse
+    {
         $useCase = new AddNewJob($repository, $messageBus);
 
         $jobId = $this->jobIdFor($request);
@@ -60,8 +61,11 @@ class JobController extends AbstractController
      * curl https://localhost:8002/job/status/2552f7a5-d3a2-40cf-bbc1-9c8d51970608
      *
      */
-    #[Route('/job/status/{id}', methods:['GET'])]
-    public function readStatusOfJob(JobRepository $repository, $id): JsonResponse
+    #[Route('/job/status/{id}', methods: ['GET'])]
+    public function readStatusOfJob(
+        JobRepository $repository,
+        string        $id,
+    ): JsonResponse
     {
         try {
             $useCase = new ReadStatusOfJob($repository);
@@ -70,7 +74,10 @@ class JobController extends AbstractController
 
             return $this->json($reply->toDataForJsonResponse());
         } catch (JobNotFoundException $e) {
-            throw $this->createNotFoundException($e->getMessage());
+            return new JsonResponse([
+                                        "message" => "job not found",
+                                        "jobId" => $id,
+                                    ], 404);
         }
     }
 }
