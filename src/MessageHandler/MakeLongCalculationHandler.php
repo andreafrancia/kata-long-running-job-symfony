@@ -3,6 +3,8 @@
 namespace App\MessageHandler;
 
 use App\Message\MakeLongCalculation;
+use App\MessageHandler\MakeLongCalculationHandler\Calculator;
+use App\MessageHandler\MakeLongCalculationHandler\ProductionCalculator;
 use App\Repository\JobNotFoundException;
 use App\Repository\JobRepository;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;

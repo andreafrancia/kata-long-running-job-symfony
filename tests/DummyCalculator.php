@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\MessageHandler\Calculator;
+use App\MessageHandler\MakeLongCalculationHandler\Calculator;
 
 class DummyCalculator implements Calculator
 {

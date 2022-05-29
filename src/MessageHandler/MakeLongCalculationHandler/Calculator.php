@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\MakeLongCalculationHandler;
 
 interface Calculator
 {

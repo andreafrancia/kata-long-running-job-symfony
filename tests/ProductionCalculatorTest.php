@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\MessageHandler\ProductionCalculator;
+use App\MessageHandler\MakeLongCalculationHandler\ProductionCalculator;
 use PHPUnit\Framework\TestCase;
 
 class ProductionCalculatorTest extends TestCase
