@@ -31,7 +31,7 @@ class MakeLongCalculationHandlerTest extends KernelTestCase
 
         $this->handler->__invoke(new MakeLongCalculation("482ab5fc-be7e-417e-b4f0-a351ca762036"));
 
-        $jobStatus = $this->repository->readJobStatus("482ab5fc-be7e-417e-b4f0-a351ca762036");
+        $jobStatus = $this->repository->readJobStatusAndResult("482ab5fc-be7e-417e-b4f0-a351ca762036");
         self::assertEquals(true, $jobStatus->isCompleted());
     }
 }

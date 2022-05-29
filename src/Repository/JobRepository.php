@@ -47,7 +47,7 @@ class JobRepository extends ServiceEntityRepository
     /**
      * @throws \Exception
      */
-    public function readJobStatus(string $jobId): JobStatusAndResult
+    public function readJobStatusAndResult(string $jobId): JobStatusAndResult
     {
         /** @var Job $job */
         $job = $this->find($jobId);

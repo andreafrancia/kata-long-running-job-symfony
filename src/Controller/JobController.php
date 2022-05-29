@@ -48,7 +48,7 @@ class JobController extends AbstractController
     #[Route('/job/status/{id}', methods:['GET'])]
     public function readStatusofJob(JobRepository $repository, $id): JsonResponse
     {
-        $jobStatusAndResult = $repository->readJobStatus($id);
+        $jobStatusAndResult = $repository->readJobStatusAndResult($id);
 
         $result = [
             'status' => $jobStatusAndResult->status

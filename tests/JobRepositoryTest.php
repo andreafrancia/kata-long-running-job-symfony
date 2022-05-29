@@ -32,7 +32,7 @@ class JobRepositoryTest extends KernelTestCase
     {
         $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
-        $status = $this->repository->readJobStatus('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+        $status = $this->repository->readJobStatusAndResult('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
         self::assertEquals(new JobStatusAndResult(JobStatus::started, null),
                            $status);
@@ -43,7 +43,7 @@ class JobRepositoryTest extends KernelTestCase
         $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
         $this->repository->trackCompletion('1ecdc6ce-1a82-605a-8724-f3236ab886a0', "job result");
 
-        $status = $this->repository->readJobStatus('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+        $status = $this->repository->readJobStatusAndResult('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
         self::assertEquals(new JobStatusAndResult(JobStatus::completed, "job result"),
                            $status);
