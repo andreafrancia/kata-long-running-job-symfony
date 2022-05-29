@@ -5,7 +5,7 @@ namespace App\Tests;
 use App\MessageHandler\MakeLongCalculationHandler\ProductionCalculator;
 use PHPUnit\Framework\TestCase;
 
-class ProductionCalculatorTest extends TestCase
+class ProductionCalculatorGetSleepDurationTest extends TestCase
 {
     private ProductionCalculator $calculator;
 
@@ -14,14 +14,14 @@ class ProductionCalculatorTest extends TestCase
         $this->calculator = new ProductionCalculator();
     }
 
-    public function testWhenDefinedByEnvironmentVariable(): void
+    public function testConfiguredByEnvironemntVariable(): void
     {
         $result = $this->calculator->getSleepDuration(["JOB_DURATION" => "99"]);
 
         self::assertEquals(99, $result);
     }
 
-    public function testDefaultVAlue(): void
+    public function testDefaultValue(): void
     {
         $result = $this->calculator->getSleepDuration([]);
 
