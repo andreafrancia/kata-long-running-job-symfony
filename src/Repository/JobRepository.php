@@ -23,11 +23,17 @@ class JobRepository extends ServiceEntityRepository
         parent::__construct($registry, Job::class);
     }
 
-    public function addNewJob(string $id)
+    /**
+     * @param string $id
+     * @param resource $input
+     * @return void
+     */
+    public function addNewJob(string $id, $input): void
     {
         $job = new Job();
         $job->setId($id);
         $job->setStatus(JobStatus::started);
+        $job->setInput($input);
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
     }

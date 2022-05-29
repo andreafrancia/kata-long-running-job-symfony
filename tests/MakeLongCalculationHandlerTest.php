@@ -32,7 +32,10 @@ class MakeLongCalculationHandlerTest extends KernelTestCase
      */
     public function test()
     {
-        $this->repository->addNewJob("482ab5fc-be7e-417e-b4f0-a351ca762036");
+        $this->repository->addNewJob(
+            "482ab5fc-be7e-417e-b4f0-a351ca762036",
+            ResourceFromString::resourceFromString('data')
+        );
 
         $this->handler->__invoke(new MakeLongCalculation("482ab5fc-be7e-417e-b4f0-a351ca762036"));
 

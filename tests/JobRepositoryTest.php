@@ -23,7 +23,10 @@ class JobRepositoryTest extends KernelTestCase
 
     public function testAddNewJob(): void
     {
-        $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+        $this->repository->addNewJob(
+            '1ecdc6ce-1a82-605a-8724-f3236ab886a0',
+            ResourceFromString::resourceFromString('data')
+        );
 
         $jobs = $this->repository->findAllJobs();
 
@@ -35,7 +38,10 @@ class JobRepositoryTest extends KernelTestCase
      */
     public function testReadStatusOfJob(): void
     {
-        $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+        $this->repository->addNewJob(
+            '1ecdc6ce-1a82-605a-8724-f3236ab886a0',
+            ResourceFromString::resourceFromString('data')
+        );
 
         $status = $this->repository->readJobStatusAndResult('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
 
@@ -50,7 +56,10 @@ class JobRepositoryTest extends KernelTestCase
      */
     public function testTrackCompletion(): void
     {
-        $this->repository->addNewJob('1ecdc6ce-1a82-605a-8724-f3236ab886a0');
+        $this->repository->addNewJob(
+            '1ecdc6ce-1a82-605a-8724-f3236ab886a0',
+            ResourceFromString::resourceFromString('data')
+        );
         $this->repository->trackCompletion('1ecdc6ce-1a82-605a-8724-f3236ab886a0', "job result");
 
         $status = $this->repository->readJobStatusAndResult('1ecdc6ce-1a82-605a-8724-f3236ab886a0');

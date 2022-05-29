@@ -76,11 +76,6 @@ class JobApiToDbTest extends WebTestCase
         self::assertEquals('magical result', $this->jsonFromResponse()['result']);
     }
 
-    private function parseResult(JsonResponse $response): array
-    {
-        return json_decode($response->getContent(), true);
-    }
-
     private function addNewJob(string $jobId): array
     {
         $this->client->request('POST', "/job/add-new?job-id-for-test=$jobId");

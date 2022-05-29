@@ -18,6 +18,10 @@ class Job
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $result = null;
 
+    #[ORM\Column(type: 'blob', length: 255)]
+    /** @var resource */
+    private $input;
+
     public function getId(): ?string
     {
         return $this->id;
@@ -46,5 +50,22 @@ class Job
     public function setResult(string $result): void
     {
         $this->result = $result;
+    }
+
+    /**
+     * @param resource $input
+     * @return void
+     */
+    public function setInput($input): void
+    {
+        $this->input = $input;
+    }
+
+    /**
+     * @return resource
+     */
+    public function getInput()
+    {
+        return $this->input;
     }
 }

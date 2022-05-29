@@ -18,9 +18,14 @@ class AddNewJob
         $this->messageBus = $messageBus;
     }
 
-    public function invoke(string $jobId): AddNewJobReply
+    /**
+     * @param string $jobId
+     * @param resource $input
+     * @return AddNewJobReply
+     */
+    public function invoke(string $jobId, $input): AddNewJobReply
     {
-        $this->repository->addNewJob($jobId);
+        $this->repository->addNewJob($jobId, $input);
         $this->messageBus->dispatch(new MakeLongCalculation($jobId));
 
         return new AddNewJobReply('Job started', $jobId);

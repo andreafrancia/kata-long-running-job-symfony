@@ -27,12 +27,14 @@ class JobController extends AbstractController
     public function addNewJob(
         JobRepository $repository,
         MessageBusInterface $messageBus,
-        Request $request
+        Request $request,
     ): JsonResponse {
         $useCase = new AddNewJob($repository, $messageBus);
 
         $jobId = $this->jobIdFor($request);
-        $reply = $useCase->invoke($jobId);
+        $input = $request->getContent(true);
+
+        $reply = $useCase->invoke($jobId, $input);
 
         return $this->json([
                                'message' => $reply->message,
