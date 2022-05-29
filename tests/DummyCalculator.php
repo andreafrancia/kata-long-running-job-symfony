@@ -6,15 +6,15 @@ use App\MessageHandler\Calculator;
 
 class DummyCalculator implements Calculator
 {
-    private string $result;
+    private string $resultPrefix;
 
-    public function __construct($result)
+    public function __construct($resultPrefix)
     {
-        $this->result = $result;
+        $this->resultPrefix = $resultPrefix;
     }
 
-    public function calculate(): string
+    public function calculate(string $input): string
     {
-        return $this->result;
+        return "$this->resultPrefix $input";
     }
 }

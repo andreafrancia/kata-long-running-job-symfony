@@ -24,7 +24,9 @@ class MakeLongCalculationHandlerTest extends KernelTestCase
 
         $this->handler = new MakeLongCalculationHandler($repository);
 
-        $this->handler->setCalculatorForTest(new DummyCalculator("dummy-result"));
+        $this->handler->setCalculatorForTest(new DummyCalculator("dummy-result for"));
+
+        $repository->removeAllJobs();
     }
 
     /**
@@ -41,5 +43,6 @@ class MakeLongCalculationHandlerTest extends KernelTestCase
 
         $jobStatus = $this->repository->readJobStatusAndResult("482ab5fc-be7e-417e-b4f0-a351ca762036");
         self::assertEquals(true, $jobStatus->isCompleted());
+        self::assertEquals('dummy-result for data', $jobStatus->result);
     }
 }

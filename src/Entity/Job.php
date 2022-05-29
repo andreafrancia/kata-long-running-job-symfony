@@ -61,11 +61,9 @@ class Job
         $this->input = $input;
     }
 
-    /**
-     * @return resource
-     */
-    public function getInput()
+    public function getInputAsString(): string
     {
-        return $this->input;
+        rewind($this->input);
+        return stream_get_contents($this->input);
     }
 }

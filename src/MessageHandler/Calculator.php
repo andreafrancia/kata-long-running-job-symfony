@@ -4,5 +4,5 @@ namespace App\MessageHandler;
 
 interface Calculator
 {
-    public function calculate(): string;
+    public function calculate(string $input): string;
 }

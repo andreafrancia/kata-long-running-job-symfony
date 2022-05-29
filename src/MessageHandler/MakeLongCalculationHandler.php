@@ -24,7 +24,8 @@ class MakeLongCalculationHandler implements MessageHandlerInterface
 
     public function __invoke(MakeLongCalculation $calculation)
     {
-        $result = $this->calculator->calculate();
+        $input = $this->repository->readInputDataForJob($calculation->jobId);
+        $result = $this->calculator->calculate($input);
         $this->repository->trackCompletion($calculation->jobId, $result);
     }
 }

@@ -57,12 +57,7 @@ class JobRepository extends ServiceEntityRepository
      */
     public function readJobStatusAndResult(string $jobId): JobStatusAndResult
     {
-        /** @var Job $job */
-        $job = $this->find($jobId);
-
-        if ($job === null) {
-            throw new JobNotFoundException("Job not found, id: $jobId");
-        }
+        $job = $this->findOneJob($jobId);
 
         return new JobStatusAndResult(
             JobStatus::from($job->getStatus()),
@@ -78,5 +73,26 @@ class JobRepository extends ServiceEntityRepository
         $job->setResult($result);
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
+    }
+
+    public function readInputDataForJob(string $jobId)
+    {
+        $job = $this->findOneJob($jobId);
+        return $job->getInputAsString();
+    }
+
+    /**
+     * @throws JobNotFoundException
+     */
+    private function findOneJob(string $jobId): Job
+    {
+        /** @var Job $job */
+        $job = $this->find($jobId);
+
+        if ($job === null) {
+            throw new JobNotFoundException("Job not found, id: $jobId");
+        }
+
+        return $job;
     }
 }
