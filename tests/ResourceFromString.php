@@ -4,7 +4,6 @@ namespace App\Tests;
 
 class ResourceFromString
 {
-
     /**
      * @param string $input
      * @return false|resource
@@ -14,5 +13,4 @@ class ResourceFromString
     {
         return fopen('data://text/plain,' . $input, 'r');
     }
-
 }

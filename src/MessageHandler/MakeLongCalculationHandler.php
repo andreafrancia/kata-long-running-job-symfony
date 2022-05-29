@@ -22,6 +22,9 @@ class MakeLongCalculationHandler implements MessageHandlerInterface
         $this->calculator = $calculator;
     }
 
+    /**
+     * @throws \App\Repository\JobNotFoundException
+     */
     public function __invoke(MakeLongCalculation $calculation)
     {
         $input = $this->repository->readInputDataForJob($calculation->jobId);

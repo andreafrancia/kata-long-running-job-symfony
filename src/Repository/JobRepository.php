@@ -75,7 +75,10 @@ class JobRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function readInputDataForJob(string $jobId)
+    /**
+     * @throws JobNotFoundException
+     */
+    public function readInputDataForJob(string $jobId): string
     {
         $job = $this->findOneJob($jobId);
         return $job->getInputAsString();

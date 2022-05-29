@@ -9,7 +9,6 @@ use App\Repository\JobRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /** @group integration */
 class JobApiToDbTest extends WebTestCase

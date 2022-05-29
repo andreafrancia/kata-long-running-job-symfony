@@ -6,7 +6,12 @@ class ProductionCalculator implements Calculator
 {
     public function calculate(string $input): string
     {
-        sleep(2 * 60);
+        sleep($this->getDuration($_ENV));
         return 'real result';
+    }
+
+    public function getDuration(array $env): int
+    {
+        return intval($env['JOB_DURATION'] ?? 2 * 60);
     }
 }
