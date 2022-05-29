@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Message\MakeLongCalculation;
 use App\Repository\JobNotFoundException;
 use App\Repository\JobRepository;
 use App\UseCase\AddNewJob;
+use App\UseCase\ReadStatusOfJob;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -51,17 +51,11 @@ class JobController extends AbstractController
     public function readStatusOfJob(JobRepository $repository, $id): JsonResponse
     {
         try {
-            $jobStatusAndResult = $repository->readJobStatusAndResult($id);
+            $useCase = new ReadStatusOfJob($repository);
 
-            $result = [
-                'status' => $jobStatusAndResult->status
-            ];
+            $reply = $useCase->invoke($id);
 
-            if ($jobStatusAndResult->isCompleted()) {
-                $result['result'] = $jobStatusAndResult->result;
-            }
-
-            return $this->json($result);
+            return $this->json($reply->toDataForJsonResponse());
         } catch (JobNotFoundException $e) {
             throw $this->createNotFoundException($e->getMessage());
         }

@@ -25,5 +25,4 @@ class AddNewJob
 
         return new AddNewJobReply('Job started', $jobId);
     }
-
 }
