@@ -3,6 +3,7 @@
 namespace App\MessageHandler;
 
 use App\Message\MakeLongCalculation;
+use App\Repository\JobNotFoundException;
 use App\Repository\JobRepository;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -23,7 +24,7 @@ class MakeLongCalculationHandler implements MessageHandlerInterface
     }
 
     /**
-     * @throws \App\Repository\JobNotFoundException
+     * @throws JobNotFoundException
      */
     public function __invoke(MakeLongCalculation $calculation)
     {
