@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Message\MakeLongCalculation;
+use App\Repository\JobNotFoundException;
 use App\Repository\JobRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,7 @@ class JobController extends AbstractController
     #[Route('/job/add-new', methods: ['POST'])]
     public function addNewJob(JobRepository $repository, MessageBusInterface $messageBus): JsonResponse
     {
-        $jobId = $this->jobIdForTest ?? Uuid::v4();;
+        $jobId = $this->jobIdForTest ?? Uuid::v4();
 
         $repository->addNewJob($jobId);
         $messageBus->dispatch(new MakeLongCalculation($jobId));
@@ -46,17 +47,22 @@ class JobController extends AbstractController
      *
      */
     #[Route('/job/status/{id}', methods:['GET'])]
-    public function readStatusofJob(JobRepository $repository, $id): JsonResponse
+    public function readStatusOfJob(JobRepository $repository, $id): JsonResponse
     {
-        $jobStatusAndResult = $repository->readJobStatusAndResult($id);
+        try {
+            $jobStatusAndResult = $repository->readJobStatusAndResult($id);
 
-        $result = [
-            'status' => $jobStatusAndResult->status
-        ];
+            $result = [
+                'status' => $jobStatusAndResult->status
+            ];
 
-        if($jobStatusAndResult->isCompleted())
-            $result['result'] = $jobStatusAndResult->result;
+            if ($jobStatusAndResult->isCompleted()) {
+                $result['result'] = $jobStatusAndResult->result;
+            }
 
-        return $this->json($result);
+            return $this->json($result);
+        } catch (JobNotFoundException $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
     }
 }

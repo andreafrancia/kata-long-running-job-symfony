@@ -16,7 +16,7 @@ class Job
     private string $status;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $result;
+    private ?string $result = null;
 
     public function getId(): ?string
     {
@@ -25,7 +25,7 @@ class Job
 
     public function setId(?string $id): void
     {
-        $this->id =	 $id;
+        $this->id = $id;
     }
 
     public function getStatus(): ?string
@@ -47,5 +47,4 @@ class Job
     {
         $this->result = $result;
     }
-
 }

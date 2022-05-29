@@ -40,24 +40,28 @@ class JobRepository extends ServiceEntityRepository
     /** @return string[] */
     public function findAllJobs(): array
     {
-        return array_map(fn($job) => $job->getId()
-            , $this->findAll());
+        return array_map(
+            fn($job) => $job->getId(),
+            $this->findAll()
+        );
     }
 
     /**
-     * @throws \Exception
+     * @throws JobNotFoundException
      */
     public function readJobStatusAndResult(string $jobId): JobStatusAndResult
     {
         /** @var Job $job */
         $job = $this->find($jobId);
 
-        if($job===null)
-            throw new \Exception("Job not found, id: $jobId");
+        if ($job === null) {
+            throw new JobNotFoundException("Job not found, id: $jobId");
+        }
 
         return new JobStatusAndResult(
             JobStatus::from($job->getStatus()),
-            $job->getResult());
+            $job->getResult()
+        );
     }
 
     public function trackCompletion(string $jobId, string $result)
@@ -69,5 +73,4 @@ class JobRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($job);
         $this->getEntityManager()->flush();
     }
-
 }

@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Tests;
 
 use App\Entity\Job;
 use App\Message\MakeLongCalculation;
-use App\MessageHandler\Calculator;
 use App\MessageHandler\MakeLongCalculationHandler;
 use App\Repository\JobRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /** @group integration */
@@ -26,7 +27,10 @@ class MakeLongCalculationHandlerTest extends KernelTestCase
         $this->handler->setCalculatorForTest(new DummyCalculator("dummy-result"));
     }
 
-    function test()
+    /**
+     * @throws Exception
+     */
+    public function test()
     {
         $this->repository->addNewJob("482ab5fc-be7e-417e-b4f0-a351ca762036");
 
@@ -34,20 +38,5 @@ class MakeLongCalculationHandlerTest extends KernelTestCase
 
         $jobStatus = $this->repository->readJobStatusAndResult("482ab5fc-be7e-417e-b4f0-a351ca762036");
         self::assertEquals(true, $jobStatus->isCompleted());
-    }
-}
-
-class DummyCalculator implements Calculator
-{
-    private $result;
-
-    public function __construct($result)
-    {
-        $this->result = $result;
-    }
-
-    public function calculate(): string
-    {
-        return $this->result;
     }
 }

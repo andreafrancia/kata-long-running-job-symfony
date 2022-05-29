@@ -10,5 +10,4 @@ class MakeLongCalculation
     {
         $this->jobId = $jobId;
     }
-
 }
